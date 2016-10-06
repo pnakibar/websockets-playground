@@ -15,11 +15,37 @@
   <p id='messages'>
 
   </p>
+  <div id='mouse-pointer' style='height: 5px; width: 5px; background-color: blue; position: absolute;'>
+
+  </div>
+
+  <div id='user-mouse-pointer' style='height: 5px; width: 5px; background-color: red; position: absolute;'>
+
+  </div>
   <input id="new-message" type="text" placeholder="New Message">
   <button name="button" onclick="sendMessage()">Send</button>
   <script>
     const socket = io('http://localhost:3000');
     const messages = document.getElementById('messages');
+    const blueDot = document.getElementById('mouse-pointer');
+    const redDot = document.getElementById('user-mouse-pointer');
+
+    function handlemouse(event) {
+      event = event || window.event;
+      blueDot.style.top = event.pageY + 'px';
+      blueDot.style.left = event.pageX + 'px';
+      socket.emit('my mouse position', {
+        x: event.pageX,
+        y: event.pageY,
+      });
+    }
+
+    document.onmousemove = handlemouse;
+
+    socket.on('mouse position', (data) => {
+      redDot.style.top = data.y + 'px';
+      redDot.style.left = data.x + 'px';
+    })
 
     function addMessage(content) {
       const newDiv = document.createElement('div');

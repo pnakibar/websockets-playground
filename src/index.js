@@ -8,7 +8,6 @@ import http from 'http';
 const app = express();
 
 app.use(morgan('dev'));
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -23,6 +22,7 @@ const messages = [];
 io.on('connection', (socket) => {
   socket.emit('messages', messages);
   socket.emit('hello', 'Welcome!')
+  socket.on('my mouse position', data => socket.broadcast.emit('mouse position', data))
   socket.on('sent message', (message) => {
     messages.push(message);
     io.emit('new message', message);

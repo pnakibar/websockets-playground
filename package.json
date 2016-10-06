@@ -1,5 +1,5 @@
 {
-  "name": "Web Sockets Playground",
+  "name": "websockets-playground",
   "main": "dist/index.js",
   "directories": {
     "test": "tests"
